@@ -5,22 +5,27 @@ import React, {
   useEffect,
   PropsWithChildren,
 } from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {AuthData, authService} from '../services/authService';
 
 type AuthContextData = {
-  authData?: AuthData;
+  authData: AuthData;
   loading: boolean;
-  login(): Promise<void>;
+  login(username: string, password: string): Promise<void>;
   logout(): void;
+};
+export const defaultAuth: AuthData = {
+  username: '',
+  access_token: '',
+  refresh_token: '',
 };
 
 // Create the Auth Context with the data type specified and a empty object
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
-  const [authData, setAuthData] = useState<AuthData>();
+  const [authData, setAuthData] = useState<AuthData>(defaultAuth);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -43,22 +48,28 @@ const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
     }
   }
 
-  const login = async () => {
-    const _authData = await authService.login('richxcame', 'test123');
+  const login = async (username: string, password: string) => {
+    const _authData = await authService.login(username, password);
 
     setAuthData(_authData);
 
-    AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+    await AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
   };
 
   const logout = async () => {
-    setAuthData(undefined);
+    setAuthData(defaultAuth);
 
     await AsyncStorage.removeItem('@AuthData');
   };
 
   return (
-    <AuthContext.Provider value={{authData, loading, login, logout}}>
+    <AuthContext.Provider
+      value={{
+        authData,
+        loading,
+        login,
+        logout,
+      }}>
       {children}
     </AuthContext.Provider>
   );

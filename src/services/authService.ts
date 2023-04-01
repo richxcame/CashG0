@@ -1,25 +1,34 @@
+import api from '../plugins/axios';
+
 export type AuthData = {
+  username: string;
   access_token: string;
   refresh_token: string;
-  username: string;
 };
-const login = (username: string, password: string): Promise<AuthData> => {
-  console.log(username, password);
 
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        access_token: JWTTokenMock,
-        refresh_token: JWTTokenMock,
-        username: 'richxcame',
-      });
-    }, 1000);
-  });
+const login = async (username: string, password: string): Promise<AuthData> => {
+  try {
+    console.log({username, password});
+
+    const {data} = await api.post('/login', {
+      username,
+      password,
+    });
+    return {
+      username: 'admin',
+      access_token: data.access_token,
+      refresh_token: data.access_token,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      username: '',
+      access_token: '',
+      refresh_token: '',
+    };
+  }
 };
 
 export const authService = {
   login,
 };
-
-const JWTTokenMock =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikx1Y2FzIEdhcmNleiIsImlhdCI6MTUxNjIzOTAyMn0.oK5FZPULfF-nfZmiumDGiufxf10Fe2KiGe9G5Njoa64';
