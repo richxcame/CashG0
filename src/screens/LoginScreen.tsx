@@ -43,10 +43,11 @@ export const LoginScreen = () => {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
+                    variant="outline"
                   />
                 )}
                 name="username"
-                rules={{required: 'Usernam is required'}}
+                rules={{required: 'Username is required'}}
                 defaultValue=""
               />
               <FormControl.ErrorMessage>
@@ -55,25 +56,29 @@ export const LoginScreen = () => {
             </FormControl>
 
             {/* Password */}
-            <FormControl isInvalid={'password' in errors}>
+            <FormControl isRequired isInvalid={'password' in errors}>
               <FormControl.Label>Password</FormControl.Label>
               <Controller
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <Input
+                    variant="outline"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
                   />
                 )}
                 name="password"
+                rules={{required: 'Password is required'}}
                 defaultValue=""
               />
               <FormControl.ErrorMessage>
                 {errors.password?.message}
               </FormControl.ErrorMessage>
             </FormControl>
-            <Button onPress={handleSubmit(onSubmit)}>LOGIN</Button>
+            <Button onPress={handleSubmit(onSubmit)} colorScheme="primary">
+              LOGIN
+            </Button>
           </VStack>
         </>
       )}
