@@ -64,17 +64,18 @@ function useFetch<T = unknown>(
 
       try {
         const response = await api.get(url, config);
+
         if (response.status !== 200) {
           throw new Error(response.statusText);
         }
 
-        const data = (await response.data.json()) as T;
+        const {data} = response;
         cache.current[url] = data;
         if (cancelRequest.current) {
           return;
         }
 
-        dispatch({type: 'fetched', payload: data});
+        dispatch({type: 'fetched', payload: data as T});
       } catch (error) {
         if (cancelRequest.current) {
           return;
