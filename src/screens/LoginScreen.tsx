@@ -20,6 +20,7 @@ export const LoginScreen = () => {
       setIsLoading(true);
       await auth.login(username, password);
     } catch (err) {
+      // TODO: show notification about error
       console.log(err);
     } finally {
       setIsLoading(false);

@@ -8,8 +8,6 @@ export type AuthData = {
 
 const login = async (username: string, password: string): Promise<AuthData> => {
   try {
-    console.log({username, password});
-
     const {data} = await api.post('/login', {
       username,
       password,
@@ -20,7 +18,6 @@ const login = async (username: string, password: string): Promise<AuthData> => {
       refresh_token: data.access_token,
     };
   } catch (err) {
-    console.log(err);
     return {
       username: '',
       access_token: '',

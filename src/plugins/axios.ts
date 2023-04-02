@@ -1,33 +1,18 @@
 import axios from 'axios';
 import {API_BASE_URL} from '@env';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-import {defaultAuth} from '../contexts/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
-// Set access token and refresh token
-let authData = defaultAuth;
-(async () => {
-  try {
-    const _authData = await AsyncStorage.getItem('@AuthData');
-
-    if (_authData) {
-      authData = JSON.parse(_authData);
-    }
-  } catch (err) {
-    authData = defaultAuth;
-  }
-})();
-
 api.interceptors.request.use(
   async config => {
     if (!config.headers.Authorization) {
       const _authData = await AsyncStorage.getItem('@AuthData');
       if (_authData) {
-        authData = JSON.parse(_authData);
+        const authData = JSON.parse(_authData);
 
         config.headers.Authorization = `Bearer ${authData.access_token}`;
       }
