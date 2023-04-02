@@ -13,6 +13,7 @@ let authData = defaultAuth;
 (async () => {
   try {
     const _authData = await AsyncStorage.getItem('@AuthData');
+
     if (_authData) {
       authData = JSON.parse(_authData);
     }
@@ -22,9 +23,14 @@ let authData = defaultAuth;
 })();
 
 api.interceptors.request.use(
-  config => {
+  async config => {
     if (!config.headers.Authorization) {
-      config.headers.Authorization = `Bearer ${authData.access_token}`;
+      const _authData = await AsyncStorage.getItem('@AuthData');
+      if (_authData) {
+        authData = JSON.parse(_authData);
+
+        config.headers.Authorization = `Bearer ${authData.access_token}`;
+      }
     }
 
     return config;
@@ -38,16 +44,13 @@ const refreshAuthLogic = (failedRequest: any) =>
   api.post('/token').then(async tokenRefreshResponse => {
     const _authData = {
       username: 'admin',
-      access_token: tokenRefreshResponse.data.refresh_token,
-      refresh_token: tokenRefreshResponse.data.refresh_token,
+      access_token: tokenRefreshResponse.data.access_token || '',
+      refresh_token: tokenRefreshResponse.data.refresh_token || '',
     };
-    try {
-      await AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
-    } catch (err) {
-      await AsyncStorage.setItem('@AuthData', JSON.stringify(defaultAuth));
-    }
+    await AsyncStorage.setItem('@AuthData', JSON.stringify(_authData));
+
     failedRequest.response.config.headers.Authorization =
-      'Bearer ' + tokenRefreshResponse.data.token;
+      'Bearer ' + _authData.access_token;
     return Promise.resolve();
   });
 
