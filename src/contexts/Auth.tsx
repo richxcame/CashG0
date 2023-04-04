@@ -17,6 +17,7 @@ type AuthContextData = {
 };
 export const defaultAuth: AuthData = {
   username: '',
+  isLoggedIn: false,
   access_token: '',
   refresh_token: '',
 };

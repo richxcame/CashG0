@@ -1,10 +1,11 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 
 import {AppStack} from './AppStack';
 import {AuthStack} from './AuthStack';
 import {useAuth} from '../contexts/Auth';
 import {Loading} from '../components/Loading';
+import {NavigationContainer} from '@react-navigation/native';
+import {navigationRef} from './RootNavigation';
 
 export const Router = () => {
   const {authData, loading} = useAuth();
@@ -13,8 +14,8 @@ export const Router = () => {
     return <Loading />;
   }
   return (
-    <NavigationContainer>
-      {authData.username !== '' ? <AppStack /> : <AuthStack />}
+    <NavigationContainer ref={navigationRef}>
+      {authData.isLoggedIn ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

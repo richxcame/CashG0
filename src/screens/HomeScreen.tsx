@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import {Button, View} from 'react-native';
 import {ChevronRightIcon} from 'native-base';
 
-import {styles} from '../styles';
 import {useAuth} from '../contexts/Auth';
 import {
   Box,
@@ -61,40 +60,40 @@ export const HomeScreen = () => {
 
   return (
     <>
-      <Box>
-        <FlatList
-          data={cashes.current}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.3}
-          renderItem={({item}) => (
-            <Box borderColor="light.300" borderBottomWidth="0.3" px="2">
-              <HStack space={[2, 3]} justifyContent="space-between">
-                <VStack>
-                  <Text color="coolGray.800" bold>
-                    {item.contact} {item.amount}
-                  </Text>
-                  <Text color="coolGray.600">{item.client}</Text>
-                </VStack>
-                <Spacer />
-                <VStack justifyContent="center">
-                  <IconButton size="sm" icon={<ChevronRightIcon />} />
-                  {/* <Text
+      <View>
+        <Button title="Logout" onPress={signOut} />
+      </View>
+      {/* <Box> */}
+      <FlatList
+        data={cashes.current}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.3}
+        renderItem={({item}) => (
+          <Box borderColor="light.300" borderBottomWidth="0.3" px="2">
+            <HStack space={[2, 3]} justifyContent="space-between">
+              <VStack>
+                <Text color="coolGray.800" bold>
+                  {item.contact} {item.amount}
+                </Text>
+                <Text color="coolGray.600">{item.client}</Text>
+              </VStack>
+              <Spacer />
+              <VStack justifyContent="center">
+                <IconButton size="sm" icon={<ChevronRightIcon />} />
+                {/* <Text
                     fontSize="xs"
                     color="coolGray.800"
                     alignSelf="flex-start">
                     {item.detail}
                   </Text> */}
-                </VStack>
-              </HStack>
-            </Box>
-          )}
-          // keyExtractor={item => item.uuid}
-        />
-      </Box>
+              </VStack>
+            </HStack>
+          </Box>
+        )}
+        // keyExtractor={item => item.uuid}
+      />
+      {/* </Box> */}
       {!data && <Text>Loading...</Text>}
-      <View style={styles.container}>
-        <Button title="Logout" onPress={signOut} />
-      </View>
     </>
   );
 };
