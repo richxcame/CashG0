@@ -1,7 +1,7 @@
 import React, {useRef, useState} from 'react';
 import dayjs from 'dayjs';
 
-import {Box, FlatList, HStack, Text, VStack} from 'native-base';
+import {Box, FlatList, HStack, Spacer, Text, VStack} from 'native-base';
 import useFetch from '../hooks/useFetch';
 
 export type RangeBody = {
@@ -11,6 +11,7 @@ export type RangeBody = {
   client: number;
   detail: string;
   note: string;
+  total_amount: number;
 };
 export type CashesResponse = {
   ranges: RangeBody[];
@@ -39,7 +40,7 @@ export const RangeScreen = () => {
 
   return (
     <>
-      {/* <Box> */}
+      {/* Ranges */}
       <FlatList
         data={ranges.current}
         onEndReached={loadMore}
@@ -55,12 +56,18 @@ export const RangeScreen = () => {
                   {dayjs(item.created_at).format('DD.MM.YYYY HH:mm:ss')}{' '}
                 </Text>
               </VStack>
+              <Spacer />
+              <VStack justifyContent="center">
+                <Text color="coolGray.800" bold>
+                  {item.total_amount}
+                </Text>
+              </VStack>
             </HStack>
           </Box>
         )}
-        // keyExtractor={item => item.uuid}
       />
-      {/* </Box> */}
+
+      {/* Loader while fetching */}
       {!data && <Text>Loading...</Text>}
     </>
   );
