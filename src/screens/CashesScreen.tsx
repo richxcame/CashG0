@@ -1,8 +1,6 @@
 import React, {useRef, useState} from 'react';
-import {Button, View} from 'react-native';
 import {ChevronRightIcon, Pressable} from 'native-base';
 
-import {useAuth} from '../contexts/Auth';
 import {
   Box,
   FlatList,
@@ -35,11 +33,6 @@ export const CashesScreen = () => {
   const [limit, _] = useState<number>(50);
   const cashes = useRef<CashBody[]>([]);
 
-  const auth = useAuth();
-  const signOut = () => {
-    auth.logout();
-  };
-
   const {data, error} = useFetch<CashesResponse>(fetchURL);
   if (data && data.cashes) {
     cashes.current = [...cashes.current, ...data.cashes];
@@ -61,9 +54,6 @@ export const CashesScreen = () => {
 
   return (
     <>
-      <View>
-        <Button title="Logout" onPress={signOut} />
-      </View>
       <FlatList
         data={cashes.current}
         onEndReached={loadMore}

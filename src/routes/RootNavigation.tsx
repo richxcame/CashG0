@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Cashes: undefined;
   Ranges: undefined;
   Login: undefined;
+  About: undefined;
   CashDetails: {uuid: string};
 };
 
