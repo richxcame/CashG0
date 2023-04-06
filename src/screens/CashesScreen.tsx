@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import {Button, View} from 'react-native';
-import {ChevronRightIcon} from 'native-base';
+import {ChevronRightIcon, Pressable} from 'native-base';
 
 import {useAuth} from '../contexts/Auth';
 import {
@@ -13,6 +13,7 @@ import {
   VStack,
 } from 'native-base';
 import useFetch from '../hooks/useFetch';
+import {navigateTo} from '../routes/RootNavigation';
 
 export type CashBody = {
   uuid: string;
@@ -28,7 +29,7 @@ export type CashesResponse = {
   total: number;
 };
 
-export const HomeScreen = () => {
+export const CashesScreen = () => {
   const [fetchURL, setFetchURL] = useState<string>('/cashes');
   const [offset, setOffset] = useState<number>(0);
   const [limit, _] = useState<number>(50);
@@ -45,10 +46,6 @@ export const HomeScreen = () => {
     // setCashes(old => [...old, ...data.cashes]);
   }
 
-  // if (!data) {
-  //   return <Text>Loading...</Text>;
-  // }
-
   if (error) {
     return <Text>Couldn't fetch data</Text>;
   }
@@ -56,6 +53,11 @@ export const HomeScreen = () => {
   const loadMore = () => {
     setOffset(old => old + limit);
     setFetchURL(`/cashes?offset=${offset + limit}&limit=${limit}`);
+  };
+  const onPress = (uuid: string) => {
+    navigateTo('CashDetails', {
+      uuid,
+    });
   };
 
   return (
@@ -69,30 +71,26 @@ export const HomeScreen = () => {
         onEndReached={loadMore}
         onEndReachedThreshold={0.3}
         renderItem={({item}) => (
-          <Box borderColor="light.300" borderBottomWidth="0.3" px="2">
-            <HStack space={[2, 3]} justifyContent="space-between">
-              <VStack>
-                <Text color="coolGray.800" bold>
-                  {item.contact} {item.amount}
-                </Text>
-                <Text color="coolGray.600">{item.client}</Text>
-              </VStack>
-              <Spacer />
-              <VStack justifyContent="center">
-                <IconButton size="sm" icon={<ChevronRightIcon />} />
-                {/* <Text
-                    fontSize="xs"
-                    color="coolGray.800"
-                    alignSelf="flex-start">
-                    {item.detail}
-                  </Text> */}
-              </VStack>
-            </HStack>
-          </Box>
+          <Pressable onPress={() => onPress(item.uuid)}>
+            <Box borderColor="light.300" borderBottomWidth="0.3" px="2">
+              <HStack space={[2, 3]} justifyContent="space-between">
+                <VStack>
+                  <Text color="coolGray.800" bold>
+                    {item.contact} {item.amount}
+                  </Text>
+                  <Text color="coolGray.600">{item.client}</Text>
+                </VStack>
+                <Spacer />
+                <VStack justifyContent="center">
+                  <IconButton size="sm" icon={<ChevronRightIcon />} />
+                </VStack>
+              </HStack>
+            </Box>
+          </Pressable>
         )}
-        // keyExtractor={item => item.uuid}
       />
-      {/* </Box> */}
+
+      {/* Loader */}
       {!data && <Text>Loading...</Text>}
     </>
   );

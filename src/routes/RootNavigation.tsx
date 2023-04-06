@@ -1,9 +1,12 @@
 import {createNavigationContainerRef} from '@react-navigation/native';
 import {CommonActions} from '@react-navigation/native';
 
-type RootStackParamList = {
-  Home: undefined;
+export type RootStackParamList = {
+  CashesStack: undefined;
+  Cashes: undefined;
+  Ranges: undefined;
   Login: undefined;
+  CashDetails: {uuid: string};
 };
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
