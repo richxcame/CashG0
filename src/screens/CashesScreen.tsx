@@ -43,7 +43,6 @@ export const CashesScreen = () => {
   const {data, error} = useFetch<CashesResponse>(fetchURL);
   if (data && data.cashes) {
     cashes.current = [...cashes.current, ...data.cashes];
-    // setCashes(old => [...old, ...data.cashes]);
   }
 
   if (error) {
@@ -65,7 +64,6 @@ export const CashesScreen = () => {
       <View>
         <Button title="Logout" onPress={signOut} />
       </View>
-      {/* <Box> */}
       <FlatList
         data={cashes.current}
         onEndReached={loadMore}
