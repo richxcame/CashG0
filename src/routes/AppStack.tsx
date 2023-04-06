@@ -22,7 +22,7 @@ export const AppStack = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        options={{headerShown: false}}
+        options={{headerShown: false, title: 'Cashes'}}
         name="CashesStack"
         component={CashesStack}
       />
