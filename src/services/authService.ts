@@ -13,6 +13,7 @@ const login = async (username: string, password: string): Promise<AuthData> => {
       username,
       password,
     });
+
     return {
       username: 'admin',
       isLoggedIn: true,

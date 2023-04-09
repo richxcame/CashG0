@@ -22,7 +22,6 @@ export const defaultAuth: AuthData = {
   refresh_token: '',
 };
 
-// Create the Auth Context with the data type specified and a empty object
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
@@ -35,16 +34,13 @@ const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
 
   async function loadStorageData(): Promise<void> {
     try {
-      //Try get the data from Async Storage
       const authDataSerialized = await AsyncStorage.getItem('@AuthData');
       if (authDataSerialized) {
-        //If there are data, it's converted to an Object and the state is updated.
         const _authData: AuthData = JSON.parse(authDataSerialized);
         setAuthData(_authData);
       }
     } catch (error) {
     } finally {
-      //loading finished
       setLoading(false);
     }
   }
