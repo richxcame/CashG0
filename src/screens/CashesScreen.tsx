@@ -38,9 +38,6 @@ export const CashesScreen = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log('useef');
-    console.log(searchParams.toString());
-
     const fetchData = async () => {
       try {
         const {data} = await api.get<CashesResponse>(
@@ -62,19 +59,6 @@ export const CashesScreen = () => {
       setIsLoading(false);
     };
   }, [searchParams]);
-
-  // const {data, error} = useFetch<CashesResponse>(fetchURL);
-  // if (data && data.cashes) {
-  //   console.log('rerender');
-
-  //   console.log(cashes.current.length, 'len');
-
-  //   cashes.current = [...cashes.current, ...data.cashes];
-  // }
-
-  // if (error) {
-  //   return <Text>Couldn't fetch data</Text>;
-  // }
 
   const loadMore = () => {
     setSearchParams(old => {
